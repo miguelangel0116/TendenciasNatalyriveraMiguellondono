@@ -1,15 +1,5 @@
 import datetime
 
-class Person():
-    def __init__(self,id,name,userName,password,age,rol):
-        self.id=id
-        self.name=name
-        self.userName=userName
-        self.password=password
-        self.age=age
-        self.rol=rol
-
-
 class patient():
     def __init__(self,id,fullname,gender,email,phonenumber,birthdate,address,Contactname,patientrelationship,insuranceCompany,policynumber):
         self.id=id
@@ -26,15 +16,15 @@ class patient():
         
 
 
-class HumanResources():
-    def __init__(self,id,fullname,email,phonenumber,birthdate,address,role,username,password):
+class employee():
+    def __init__(self,id,fullname,email,phonenumber,birthdate,address,rol,username,password):
         self.id=id
         self.fullname=fullname
         self.email=email
         self.phonenumber=phonenumber
         self.birthdate=birthdate
         self.address=address
-        self.role=role
+        self.rol=rol
         self.username=username
         self.password=password
 
@@ -63,7 +53,7 @@ class Invoice():
 
 class Hospital():
     def __init__(self):
-        self.persons=[]
+        self.employees=[]
         self.patients=[]
         self.orders=[]
         self.invoices=[]

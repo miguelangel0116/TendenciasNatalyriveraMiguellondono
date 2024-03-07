@@ -1,5 +1,5 @@
-def userSearch(Hospital,userName):
-    for person in Hospital.persons:
-        if person.userName==userName:
-            return person
+def userSearch(Hospital,username):
+    for employee in Hospital.employees:
+        if employee.username==username:
+            return employee
         return None

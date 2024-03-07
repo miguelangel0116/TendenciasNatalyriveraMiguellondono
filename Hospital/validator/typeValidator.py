@@ -8,3 +8,4 @@ def numberValidator(string,element):
         return int(string)
     except:
         raise Exception(element + " no es un numero valido")
+    

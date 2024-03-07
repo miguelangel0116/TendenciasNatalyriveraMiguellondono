@@ -1,21 +1,30 @@
 from model import models
 from services import loginService
-#
-Hospital=models.Hospital()
-adminRH=models.Person(1,"juanse","juansebz","123","23","adminRH")
+from validator import userTypeValidator
 
-Hospital.persons.append(adminRH)
-Menu="1.Iniciar sesion\n0. Salir\n"
+Hospital=models.Hospital()
+adminRH=models.employee(1,"juan sebastian cardona bran","juancar@gmail.com","3116697008","17/09/2000","Cr69B#37-05","adminRH","juansebz","123")
+Hospital.employees.append(adminRH)
+MainMenu="1.Iniciar sesion\n0. Salir\n"
+
+def CreateUser(Hos):
+    try:
+        userTypeValidator.createUser(Hos,"usuario")
+    except Exception as error:
+        print(str(error))
 
 def MenuAdminRH(Hos,user):
-    option=input("1. Crear nuevo usuario\n 2.eliminar usuario\n 3. gestionar permisos de usuario\n 4. Actualizacion de datos personales\n  5.Listar todos los usuarios\n 6.Cerrar sesion")
-    
+    while True:
+        option=input("1. Crear nuevo usuario\n 2.eliminar usuario\n 3. gestionar permisos de usuario\n 4. Actualizacion de datos personales\n  5.Listar todos los usuarios\n 6.Cerrar sesion\n")
+        if option=="1":
+            CreateUser(Hos)
+        if option=="6":
+            print("Cerrando sesion")
+            return
+          
 def MenuDoctor(Hos,user):
     option=input("1. ver historial clinico\n 2.Crear nuevo registro médico\n 3.Actualizar registro médico existente\n 4. Prescribir tratamiento\n 5. Ordenar pruebas médicas\n 6. Cerrar sesión")
 
-
-def MenuSeller(Hos,user):
-    pass
 def MenupersonAdmin(Hos,user):
     option=input("1.Registrar paciente\n 2. Programar cita para paciente \n 3.Registrar informacion de facturacion \n 4. Ver historial y registros de un paciente \n 5. Listar todos los pacientes \n 6.Cerrar sesion")
 
@@ -28,8 +37,6 @@ def LoginRouter(Hos,user):
        MenuAdminRH(Hos,user)
     elif user.rol=="doc":
         MenuDoctor(Hos,user)
-    elif user.rol=="seller":
-        MenuSeller(Hos,user)
     elif user.rol=="PersonAdmin":
         MenupersonAdmin(Hos,user)
     elif user.rol=="nurse":
@@ -38,13 +45,13 @@ def LoginRouter(Hos,user):
         print("El usuario no tiene un rol valido")
     
 while True:
-    option=input(Menu)
+    option=input(MainMenu)
     print("Has elegido la opcion",option)
     if option=="1":
        print("Ingrese su usuario:")
-       userName=input()
+       username=input()
        password=input("Ingrese su contraseña:\n")
-       user=loginService.userSearch(Hospital,userName)
+       user=loginService.userSearch(Hospital,username)
     
     if user==None:
         print("El usuario no se encontro")

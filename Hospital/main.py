@@ -26,13 +26,28 @@ def CreatePatient(Hos):
     except Exception as error:
         print(str(error))
 
+def DeleteEmployee(Hos):
+    try:
+        userTypeValidator.deleteUser(Hos, user)
+    except Exception as error:
+        print(str(error))
 
 def MenuAdminRH(Hos,user):
     while True:
-        option=input("1. Crear empleado\n 2.eliminar empleado\n 4. Actualizacion datos del paciente\n  5.Listar todos los usuarios empleados\n 6.Cerrar sesion\n")
+        option=input("1. Crear empleado\n 2.eliminar empleado\n 3. Actualizacion datos del paciente\n  4.Listar todos los usuarios empleados\n 5.Cerrar sesion\n")
         if option=="1":
             CreateUser(Hos)
-        if option=="6":
+
+        if option=="2":
+            DeleteEmployee(Hos)
+        
+        if option =="3":
+            username_to_update = input("Ingrese el username del empleado que desea actualizar: ")
+            user_to_update = loginService.SearchEmployee(Hos, username_to_update)
+            if user_to_update:
+                userTypeValidator.updateEmployee(Hos, user_to_update)
+            
+        if option=="5":
             print("Cerrando sesion")
             return
           
@@ -43,7 +58,7 @@ def MenupersonAdmin(Hos,user):
     while True:
         option=input("1.Crear paciente\n 2. Actualizar paciente \n 3.programar cita para paciente \n 4. Listar todos los pacientes\n 5. Cerrar sesion\n ")
         if option=="1":
-            CreatePatient(Hos)
+            CreatePatient(Hos) 
         if option=="5":
            print("Cerrando sesion")
            return

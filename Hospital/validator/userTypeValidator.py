@@ -1,6 +1,8 @@
 from .typeValidator import *
 import validator.typeValidator as typeValidator
 import services.HumanResourcesService as HumanResourcesService
+import services.loginService as loginService
+
 
 def createEmployee(Hos,rol):
     fullname=input("ingrese nombre completo del " + rol + ":")
@@ -25,4 +27,13 @@ def createEmployee(Hos,rol):
     textValidator(password,"contraseña de " + rol + ":")
     HumanResourcesService.createEmployee(Hos,id,fullname,email,phonenumber,birthdate,address,rol,username,password)
     
+def deleteUser(Hos, rol="empleado"):
+    id = numberValidator(input(f"Ingrese la cédula del empleado a eliminar: "), f"Cédula de emplead")
+    HumanResourcesService.deleteUser(Hos, id)
    
+def updateEmployee(Hos, user):
+    textValidator(user.fullname, f"Nombre de {user.username}")
+    textValidator(user.email, f"Correo electrónico de {user.username}")
+    textValidator(user.phonenumber, f"Número de teléfono de {user.username}")
+    HumanResourcesService.updateEmployee(Hos, user)
+    

@@ -10,15 +10,18 @@ def validateUserName(Hos,username):
             return employee
     return None
 
-def createUser(Hos,id,fullname,email,phonenumber,birthdate,address,rol,username,password):
-    user=validateId(Hos,id)
+def createEmployee(Hos, id, fullname, email, phonenumber, birthdate, address, rol, username, password):
+    user = validateId(Hos, id)
     if user:
-        raise Exception("ya existe un usuario con esa cedula registrada")
-    user=None
-    if username!=None:
-        user=validateUserName(Hos,username)
+        raise Exception("Ya existe un usuario con esa cédula registrada")
+    user = validateUserName(Hos, username)
     if user:
-        raise Exception("ya existe un usuario con ese username registrado")
-    user=models.employee(id,fullname,email,phonenumber,birthdate,address,rol,username,password)
+        raise Exception("Ya existe un usuario con ese username registrado")
+
+    user = models.employee(id, fullname, email, phonenumber, birthdate, address, rol, username, password)
     Hos.employees.append(user)
+    print("Empleado: {} creado con éxito".format(user.fullname))
+
+    
+ 
 

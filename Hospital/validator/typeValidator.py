@@ -9,3 +9,12 @@ def numberValidator(string,element):
     except:
         raise Exception(element + " no es un numero valido")
     
+
+def assignrole(role):
+    roleSelection = {
+    "1": "adminRH",
+    "2": "PersonaAdmin",
+    "3": "doctor",
+    "4": "Enfermera",
+    }
+    return roleSelection.get(role, "Opción inválida")

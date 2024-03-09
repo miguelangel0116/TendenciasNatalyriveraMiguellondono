@@ -1,7 +1,7 @@
 import datetime
 
-class patient():
-    def __init__(self,id,fullname,gender,email,phonenumber,birthdate,address,Contactname,patientrelationship,insuranceCompany,policynumber):
+class Patient():
+    def __init__(self,id,fullname,gender,email,phonenumber,birthdate,address,Contactname,patientrelationship,insuranceCompany,policynumber,statePolicy,policyValidity):
         self.id=id
         self.fullname=fullname
         self.gender=gender
@@ -13,7 +13,8 @@ class patient():
         self.patientrelationship=patientrelationship
         self.insuranceCompany=insuranceCompany
         self.policynumber=policynumber
-        
+        self.statePolicy=statePolicy
+        self.policyValidity=policyValidity
 
 
 class employee():

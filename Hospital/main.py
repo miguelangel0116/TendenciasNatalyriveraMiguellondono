@@ -1,21 +1,35 @@
 from model import models
 from services import loginService
 from validator import userTypeValidator
+from validator import patientTypeValidators
+
 
 Hospital=models.Hospital()
 adminRH=models.employee(1,"juan sebastian cardona bran","juancar@gmail.com","3116697008","17/09/2000","Cr69B#37-05","adminRH","juansebz","123")
+PersonalAdmin=models.employee(2,"Nataly rivera agudelo","Nata@gmail.com","3246936436","19/03/2005","Cr68B#34-07","PersonalAdmin","nata","340")
+Doctor=models.employee(3,"Alejandro zarate cano","Alejozarate@gmail.com","3125854741","20/04/2000","Cr64B#35c-02","doctor","alejo","234")
 Hospital.employees.append(adminRH)
+Hospital.employees.append(PersonalAdmin)
+Hospital.employees.append(Doctor)
 MainMenu="1.Iniciar sesion\n0. Salir\n"
+
 
 def CreateUser(Hos):
     try:
-        userTypeValidator.createUser(Hos,"usuario")
+        userTypeValidator.createEmployee(Hos,"empleado")
     except Exception as error:
         print(str(error))
 
+def CreatePatient(Hos):
+    try:
+        patientTypeValidators.createPatient(Hos,"paciente")
+    except Exception as error:
+        print(str(error))
+
+
 def MenuAdminRH(Hos,user):
     while True:
-        option=input("1. Crear nuevo usuario\n 2.eliminar usuario\n 3. gestionar permisos de usuario\n 4. Actualizacion de datos personales\n  5.Listar todos los usuarios\n 6.Cerrar sesion\n")
+        option=input("1. Crear empleado\n 2.eliminar empleado\n 4. Actualizacion datos del paciente\n  5.Listar todos los usuarios empleados\n 6.Cerrar sesion\n")
         if option=="1":
             CreateUser(Hos)
         if option=="6":
@@ -23,27 +37,35 @@ def MenuAdminRH(Hos,user):
             return
           
 def MenuDoctor(Hos,user):
-    option=input("1. ver historial clinico\n 2.Crear nuevo registro médico\n 3.Actualizar registro médico existente\n 4. Prescribir tratamiento\n 5. Ordenar pruebas médicas\n 6. Cerrar sesión")
+    option=input("1. ver datos del paciente\n 2.Generar historia clinica\n 3.Cerrar sesion\n")
 
 def MenupersonAdmin(Hos,user):
-    option=input("1.Registrar paciente\n 2. Programar cita para paciente \n 3.Registrar informacion de facturacion \n 4. Ver historial y registros de un paciente \n 5. Listar todos los pacientes \n 6.Cerrar sesion")
+    while True:
+        option=input("1.Crear paciente\n 2. Actualizar paciente \n 3.programar cita para paciente \n 4. Listar todos los pacientes\n 5. Cerrar sesion\n ")
+        if option=="1":
+            CreatePatient(Hos)
+        if option=="5":
+           print("Cerrando sesion")
+           return
 
 def MenuNurse(Hos,user):
-    option=input("1. Registrar datos vitales de un paciente\n 2. Registrar medicamentos administrados\n 3. Registrar procedimientos realizados\n 4. Registrar pruebas médicas\n 5. Ver observaciones y detalles de la atención del paciente\n 6. Cerrar sesión")
+    option=input("1. Registrar datos vitales del paciente\n 2. Generar registro de visita\n 3. Cerrar sesión")
 
 def LoginRouter(Hos,user):
     print(user.rol)
     if user.rol=="adminRH":
        MenuAdminRH(Hos,user)
-    elif user.rol=="doc":
+    elif user.rol=="doctor":
         MenuDoctor(Hos,user)
-    elif user.rol=="PersonAdmin":
+    elif user.rol=="PersonalAdmin":
         MenupersonAdmin(Hos,user)
-    elif user.rol=="nurse":
+    elif user.rol=="Enfermera":
         MenuNurse(Hos,user)
     else:
         print("El usuario no tiene un rol valido")
     
+
+
 while True:
     option=input(MainMenu)
     print("Has elegido la opcion",option)
@@ -51,8 +73,7 @@ while True:
        print("Ingrese su usuario:")
        username=input()
        password=input("Ingrese su contraseña:\n")
-       user=loginService.userSearch(Hospital,username)
-    
+       user=loginService.SearchEmployee(Hospital,username)
     if user==None:
         print("El usuario no se encontro")
         continue
@@ -60,6 +81,7 @@ while True:
        print("usuario o contraseña incorrecto")
        continue
     LoginRouter(Hospital,user)
+    
     if option=="0":
         print("Hasta pronto")
         break

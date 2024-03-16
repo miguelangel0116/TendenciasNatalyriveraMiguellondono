@@ -1,30 +1,70 @@
-from .HumanResourcesService import validateId
-import model.models as models
 import datetime
+import model.models as models
 
-def createMedicalQuery(Hospital, patientId, idDoctor, consultationReason, symptoms, diagnosis, diagnosisAid, medications, procedures):
-    patient = validateId(Hospital, str(patientId))
-    if patient is None:
-        raise Exception("El paciente no existe")
-    date = datetime.date.today()
-    newClinicalHistory = {}
-    newClinicalHistory["date"] = date
-    newClinicalHistory["idDoctor"] = idDoctor
-    newClinicalHistory["consultationReason"] = consultationReason
-    newClinicalHistory["symptoms"] = symptoms
-    newClinicalHistory["diagnosis"] = diagnosis
-    if diagnosisAid != "N/A":
-        order = models.Order(len(Hospital.orders), patient.id, date, "N/A", "N/A", diagnosisAid)
-        Hospital.orders.append(order)
-    if diagnosisAid == "N/A":
-        newClinicalHistory["medications"] = medications
-        newClinicalHistory["procedures"] = procedures
-        order = models.Order(len(Hospital.orders), patient.id, date, medications, procedures, "N/A")
-        Hospital.orders.append(order)
-    if str(patient.id) not in Hospital.clinicalHistory:
-        Hospital.clinicalHistory[str(patient.id)] = {}
-    if date not in Hospital.clinicalHistory[str(patient.id)]:
-        Hospital.clinicalHistory[str(patient.id)][date] = []
-    Hospital.clinicalHistory[str(patient.id)][date].append(newClinicalHistory)
-    print("Historia clinica agregada con exito")
-    print(Hospital.clinicalHistory)
+def validateId(Hospital,id):
+    for Patient in Hospital.patients:
+        if Patient.id==id:
+            return Patient
+    return None
+
+def validateIdExist(Hospital,id):
+    for Patient in Hospital.patients:
+        if Patient.id==id:
+            return id
+    return None
+
+
+
+def createMedicalHistoryQuery(Hospital,patientId,doctorId,consultationReason,symptomatology,diagnosis,order):
+    patient = validateId(Hospital,patientId)
+    if not patient:
+        raise Exception("No existe el paciente")
+    newClinicalHistory ={}
+    date = datetime.datetime.today()
+    newClinicalHistory["doctorId"]=doctorId
+    newClinicalHistory["consultationReason"]=consultationReason
+    newClinicalHistory["symptomatology"]=symptomatology
+    newClinicalHistory["diagnosis"]=diagnosis
+    newClinicalHistory["order"]=order     
+    Hospital.clinicalHistory[str(patientId)][date] = newClinicalHistory
+  
+def getHistoryClinicQuery(hospital, patientId):
+    patient = validateId(hospital, patientId)
+    if not patient:
+        raise Exception("No existe el paciente.")
+
+    patient_history = hospital.clinicalHistory.get(str(patientId))
+    if not patient_history:
+        raise Exception("No hay historial clínico registrado para este paciente.")
+
+    return patient_history
+
+
+
+def createOrder(Hospital, orderId, patientId, doctorId,date,diagnosticHelp,medicines,procedure):
+    patientId = validateIdExist(Hospital,patientId)
+    if not patientId:
+        raise Exception("no existe el paciente")   
+    order= models.Order(orderId, patientId, doctorId,date,diagnosticHelp,medicines,procedure) 
+    Hospital.orders.append(order)
+    return order 
+    
+     
+def createMedicine(Hospital,orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost):
+    medicine = models.Medicine(orderId, itemMedicine, medicineName, medicineDose, durationMedication, medicineCost)
+    Hospital.medicines.append(medicine)
+    return medicine
+   
+
+
+def createProcedure(Hospital,orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId):
+    procedure = models.Procedure(orderId,itemProcedure,nameProcedure,numberRepeated,frequencyRepeated,procedureCost,requiresSpecialistP,specialistId)
+    Hospital.procedures.append(procedure)
+    return procedure
+
+    
+def createDiagnosticHelp(Hospital,orderId, itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId):
+    diagnosticHelp = models.DiagnosticHelp(orderId,itemDiagnostic, nameDiagnostic, quantity, diagnosticCost, requiresSpecialistD, specialistId)
+    Hospital.diagnosticHelp.append(diagnosticHelp)
+    return diagnosticHelp
+    

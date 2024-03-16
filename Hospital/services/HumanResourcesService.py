@@ -1,13 +1,13 @@
 import model.models as models
 def validateId(Hos,id):
-    for employee in Hos.employees:
-        if employee.id==id:
-            return employee
+    for Employee in Hos.employees:
+        if Employee.id==id:
+            return Employee
     return None
 def validateUserName(Hos,username):
-    for employee in Hos.employees:
-        if employee.username==username:
-            return employee
+    for Employee in Hos.employees:
+        if Employee.username==username:
+            return Employee
     return None
 
 def createEmployee(Hos, id, fullname, email, phonenumber, birthdate, address, rol, username, password):
@@ -18,34 +18,44 @@ def createEmployee(Hos, id, fullname, email, phonenumber, birthdate, address, ro
     if user:
         raise Exception("Ya existe un usuario con ese username registrado")
 
-    user = models.employee(id, fullname, email, phonenumber, birthdate, address, rol, username, password)
+    user = models.Employee(id, fullname, email, phonenumber, birthdate, address, rol, username, password)
     Hos.employees.append(user)
     print("Empleado: {} creado con éxito".format(user.fullname))
 
-def deleteUser(Hos, id):
+def deleteEmployee(Hos, id):
     user = validateId(Hos, id)
     if user:
         Hos.employees.remove(user)
-        print(f"Empleado con cédula {id} eliminado con éxito")
+        print(f"Empleado: {user.fullname} con cédula {id} ha sido eliminado exitosamente")
     else:
         raise Exception("No existe un usuario con esa cédula")
     
-def validateId(Hos, id):
-    for employee in Hos.employees:
-        if employee.id == id:
-            return employee
-    return None
+
  
 def updateEmployee(Hos, user):
-    # Implementa la lógica de actualización aquí
-    # Puedes pedir al usuario que ingrese los nuevos datos o proporcionar un formulario, etc.
-    new_fullname = input(f"Ingrese el nuevo nombre completo para {user.username}: ")
-    new_email = input(f"Ingrese el nuevo correo electrónico para {user.username}: ")
-    new_phonenumber = input(f"Ingrese el nuevo número de teléfono para {user.username}: ")
+    Newfullname = input(f"Ingrese el nuevo nombre completo para {user.fullname}: ")
+    Newemail = input(f"Ingrese el nuevo correo electrónico para {user.fullname}: ")
+    Newphonenumber = input(f"Ingrese el nuevo número de teléfono para {user.fullname}: ")
+    NewBirthdate=input(f"Ingrese la nueva fecha de nacimiento para {user.fullname}: ")
+    Newaddress=input(f"Ingrese la nueva direccion para {user.fullname}: ")
+    Newusername=input(f"Ingrese el nuevo nombre de usuario para {user.fullname}: ")
+    Newpassword=input(f"Ingrese la nueva contraseña para {user.fullname}: ")
+    user.fullname = Newfullname
+    user.email = Newemail
+    user.phonenumber = Newphonenumber
+    user.birthdate = NewBirthdate
+    user.address = Newaddress
+    user.username = Newusername
+    user.password = Newpassword
+    print(f"Datos de {user.fullname} actualizados con éxito.")
+    
+def listEmployees(Hospital):
+    for Employee in Hospital.employees:
+        print(f"ID: {Employee.id}, Nombre: {Employee.fullname}, Rol: {Employee.rol}")
 
-    # Actualiza los datos del usuario
-    user.fullname = new_fullname
-    user.email = new_email
-    user.phonenumber = new_phonenumber
 
-    print(f"Datos de {user.username} actualizados con éxito.")
+def getEmployeeById(Hospital, id):
+    for Employee in Hospital.employees:
+        if Employee.id == id:
+            return Employee
+    return None

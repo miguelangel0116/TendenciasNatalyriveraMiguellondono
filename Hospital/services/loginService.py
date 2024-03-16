@@ -1,8 +1,8 @@
 def SearchEmployee(Hospital,username):
-    for employee in Hospital.employees:
-        if employee.username==username:
-           return employee
+    for Employee in Hospital.employees:
+        if Employee.username==username:
+           return Employee
     return None
-    
+
 
 
